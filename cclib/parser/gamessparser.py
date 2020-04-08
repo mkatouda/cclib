@@ -620,10 +620,13 @@ class GAMESS(logfileparser.Logfile):
         #   0  0      -38.298939963   -38.298939963   0.131784454   0.000000000
         #   1  1      -38.332044339    -0.033104376   0.026019716   0.000000000
         # ... and will be terminated by a blank line.
-        if line.rstrip()[-16:] == " SCF CALCULATION":
+        if line.rstrip()[-16:] == " SCF CALCULATION" or line.rstrip()[-16:] == "DFTB CALCULATION":
 
             # Remember the type of SCF.
-            self.scftype = line.strip()[:-16]
+            if line.rstrip()[-16:]  == " SCF CALCULATION":
+                self.scftype = line.strip()[:-16]                
+            elif line.rstrip()[-16:] == "DFTB CALCULATION":
+                self.scftype = line.strip()[:-12]
 
             self.skip_line(inputfile, 'dashes')
 
